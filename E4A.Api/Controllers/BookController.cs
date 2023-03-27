@@ -25,12 +25,6 @@ namespace E4A.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBook([FromBody] Book model)
         {
-            //book.Nota = model.Nota;
-            //book.Autora = model.Autora;
-            //book.Editora = model.Editora;
-            //book.Descricao = model.Descricao;
-            //book.ImageUrl = model.ImageUrl;
-            //book.Visto = model.Visto;
 
             var book = new Book();
             _db.Book.Add(model);
@@ -47,9 +41,9 @@ namespace E4A.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetId(int id)
+        public async Task<ActionResult<Book>> GetId(int id)
         {
-            var book = await _db.Book.FindAsync(id);
+            Book book = await _db.Book.FindAsync(id);
 
             if (book == null)
             {

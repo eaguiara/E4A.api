@@ -46,7 +46,7 @@ namespace E4A.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetId(int id)
+        public async Task<ActionResult<Movies>> GetId(int id)
         {
             var movies = await _db.Movie.FindAsync(id);
 

@@ -47,7 +47,7 @@ namespace E4A.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetId(int id)
+        public async Task<ActionResult<Music>> GetId(int id)
         {
             var music = await _db.Music.FindAsync(id);
 
