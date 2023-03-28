@@ -23,21 +23,19 @@ namespace E4A.Api.Controllers
             return _db.Book.Any(e => e.Id == id);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateBook([FromBody] Book model)
+        public async Task<ActionResult<Book>> Post(Book book)
         {
-
-            var book = new Book();
-            _db.Book.Add(model);
+            _db.Book.Add(book);
             await _db.SaveChangesAsync();
             book.Validate();
-            return CreatedAtAction("Post", new { id = model.Id }, model);
+            return CreatedAtAction(nameof(GetId), new { id = book.Id }, book);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Book>>> Get()
         {
 
-            return Ok();
+            return await _db.Book.ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -60,7 +58,7 @@ namespace E4A.Api.Controllers
                 return BadRequest();
             }
 
-            _db.Entry(book).State = EntityState.Modified;
+            _db.Book.Update(book);
 
             try
             {

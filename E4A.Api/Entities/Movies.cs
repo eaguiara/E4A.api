@@ -13,24 +13,19 @@
 
         internal void Validate()
         {
-            if (string.IsNullOrEmpty(Descricao))
-            {
-                throw new ArgumentNullException("Descrição obrigatória");
-            }
 
             if (string.IsNullOrEmpty(Titulo))
             {
-                throw new ArgumentNullException("Titulo obrigatória");
+                throw new ArgumentNullException("Titulo é obrigatório");
             }
 
             if (string.IsNullOrEmpty(Diretora))
             {
-                throw new ArgumentNullException("Titulo obrigatória");
+                throw new ArgumentNullException("Diretora é obrigatória");
             }
-
             if (string.IsNullOrEmpty(Produtora))
             {
-                throw new ArgumentNullException("Titulo obrigatória");
+                throw new ArgumentNullException("Produtora é obrigatória");
             }
         }
     }

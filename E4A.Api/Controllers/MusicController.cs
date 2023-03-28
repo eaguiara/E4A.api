@@ -23,27 +23,19 @@ namespace E4A.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBook([FromBody] Music model)
+        public async Task<ActionResult<Music>> Post(Music music)
         {
-            //book.Nota = model.Nota;
-            //book.Autora = model.Autora;
-            //book.Editora = model.Editora;
-            //book.Descricao = model.Descricao;
-            //book.ImageUrl = model.ImageUrl;
-            //book.Visto = model.Visto;
-
-            var music = new Music();
-            _db.Music.Add(model);
+            _db.Music.Add(music);
             await _db.SaveChangesAsync();
             music.Validate();
-            return CreatedAtAction("Post", new { id = model.Id }, model);
+            return CreatedAtAction(nameof(GetId), new { id = music.Id }, music);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Music>>> Get()
         {
 
-            return Ok();
+            return await _db.Music.ToListAsync();
         }
 
         [HttpGet("{id}")]

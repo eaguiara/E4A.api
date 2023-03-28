@@ -17,32 +17,20 @@ namespace E4A.Api.Controllers
         {
             _db = db;
         }
-        private bool MoviesExists(int? id)
-        {
-            return _db.Movie.Any(e => e.Id == id);
-        }
         [HttpPost]
-        public async Task<IActionResult> CreateMovies([FromBody] Movies model)
+        public async Task<ActionResult<Movies>> Post(Movies movie)
         {
-            //Movies.Nota = model.Nota;
-            //Movies.Autora = model.Autora;
-            //Movies.Editora = model.Editora;
-            //Movies.Descricao = model.Descricao;
-            //Movies.ImageUrl = model.ImageUrl;
-            //Movies.Visto = model.Visto;
-
-            var movies = new Movies();
-            _db.Movie.Add(model);
+            _db.Movie.Add(movie);
             await _db.SaveChangesAsync();
-            movies.Validate();
-            return CreatedAtAction("Post", new { id = model.Id }, model);
+            movie.Validate();
+            return CreatedAtAction(nameof(GetId), new { id = movie.Id }, movie);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Movies>>> Get()
         {
+            return await _db.Movie.ToListAsync();
 
-            return Ok();
         }
 
         [HttpGet("{id}")]
@@ -57,15 +45,15 @@ namespace E4A.Api.Controllers
             return movies;
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditMovies(int? id, Movies movies)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditMovies(int id, Movies movies)
         {
             if (id != movies.Id)
             {
                 return BadRequest();
             }
 
-            _db.Entry(movies).State = EntityState.Modified;
+            _db.Movie.Update(movies);
 
             try
             {
@@ -86,16 +74,21 @@ namespace E4A.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        private bool MoviesExists(int id)
+        {
+            return _db.Movie.Any(e => e.Id == id);
+        }
+
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeletMovies(int id)
         {
-            var movies = await _db.Movie.FindAsync(id);
-            if (movies == null)
+            Movies movie = await _db.Movie.FindAsync(id);
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            _db.Movie.Remove(movies);
+            _db.Movie.Remove(movie);
             await _db.SaveChangesAsync();
 
             return NoContent();
