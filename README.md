@@ -1,4 +1,4 @@
-<h1>Simple CRUD API</h1>
+<h1>Simples CRUD API</h1>
 
 
 <h2>Descrição</h2>
